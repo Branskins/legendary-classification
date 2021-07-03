@@ -20,16 +20,22 @@ def other_stat(base_stat, iv, ev, lvl, nature):
 
 def calculate_stats(pokemon):
   pokemon_stats = pokemon['stats']
-  total_stats = []
-  iv, ev = 0
+  total_stats = {}
+  iv = ev = 0
   lvl = 50
   nature = 1
+  for stat in pokemon_stats:
+    stat_value = stat['base_stat']
+    stat_name = stat['stat']['name']
+    total_stats[stat_name] = other_stat(stat_value, iv, ev, lvl, nature)
+  
   return total_stats
 
 def main():
   print('MAIN')
   pokemon = get_pokemon()
-  print(pokemon['stats'])
+  total_stats = calculate_stats(pokemon)
+  print(total_stats)
 
 
 if __name__ == '__main__':
