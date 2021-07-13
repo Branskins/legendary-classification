@@ -1,33 +1,43 @@
-import pyodbc
-import urllib3
-import json
+import csv
+import os
+from datetime import date
 
-driver = '{ODBC Driver 17 for SQL Server}'
-server = 'localhost' 
-database = 'POKEMON_URL' 
+from poke_api import get_pokemon_resources
 
-con_string = f'DRIVER={driver};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
-conn = pyodbc.connect(con_string)
+def save_pokemon_to_csv(pokemon):
+  # Set CSV file name with today's date
+  today = date.today().strftime('%Y-%m-%d')
+  csv_name = f'pokemon_resources/pokemon_resources_{today}.csv'
+  # Save temporary data into a CSV file
+  with open(csv_name, 'w', newline='') as csvfile:
+    field_names = pokemon[0].keys()
+    writer = csv.DictWriter(csvfile, fieldnames=field_names)
 
-def get_all_pokemon():
-  # Initialize data to retrieve
-  all_pokemon = []
-  # Do initial HTTP request
-  http = urllib3.PoolManager()
-  res = http.request('GET', 'https://pokeapi.co/api/v2/pokemon?limit=200')
-  json_data = json.loads(res.data.decode('utf-8'))
-  # Append pokemon results
-  all_pokemon.append(json_data['results'])
+    writer.writeheader()
+    writer.writerows(pokemon)
 
-  while(json_data['next'] != None):
-    # Get next URL to retrieve remaining data 
-    next_request = json_data['next']
-    res = http.request('GET', next_request)
-    json_data = json.loads(res.data.decode('utf-8'))
-    all_pokemon.append(json_data['results'])
+def get_pokemon_from_csv():
+  files = []
+  pokemon = []
+  # Read all the CSV files
+  with os.scandir('pokemon_resources') as it:
+    files = [(entry.name, entry.stat().st_mtime) for entry in it if entry.is_file() and entry.name.endswith('.csv')]
+  # Order by date, get the lastest date on top
+  files = sorted(files, key=lambda entry: entry[1], reverse=True)
+  csv_name = f'pokemon_resources/{files[0][0]}'
+  # Read the most recent CSV file, make a list of dict
+  with open(csv_name, 'r') as csvfile:
+    reader = csv.DictReader(csvfile)
 
-  return all_pokemon
+    for row in reader:
+      pokemon.append(dict(row))
+  
+  return pokemon
+
+
+def main():
+  print('MAIN')
+  
 
 if __name__ == '__main__':
-  pokemon = get_all_pokemon()
-  print(len(pokemon))
+  main()
