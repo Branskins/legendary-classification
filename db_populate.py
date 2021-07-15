@@ -4,10 +4,22 @@ from datetime import date
 
 from poke_api import get_pokemon_resources
 
-def save_pokemon_to_csv(pokemon):
+def save_pokemon_resouces_to_csv(pokemon):
   # Set CSV file name with today's date
   today = date.today().strftime('%Y-%m-%d')
   csv_name = f'pokemon_resources/pokemon_resources_{today}.csv'
+  # Save temporary data into a CSV file
+  with open(csv_name, 'w', newline='') as csvfile:
+    field_names = pokemon[0].keys()
+    writer = csv.DictWriter(csvfile, fieldnames=field_names)
+
+    writer.writeheader()
+    writer.writerows(pokemon)
+
+def save_pokemon_stats_to_csv(pokemon):
+    # Set CSV file name with today's date
+  today = date.today().strftime('%Y-%m-%d')
+  csv_name = f'pokemon_stats/pokemon_stats_{today}.csv'
   # Save temporary data into a CSV file
   with open(csv_name, 'w', newline='') as csvfile:
     field_names = pokemon[0].keys()
