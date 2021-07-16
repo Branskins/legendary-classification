@@ -1,6 +1,7 @@
 import csv
 import os
 from datetime import date
+import pandas as pd
 
 from poke_api import get_pokemon_resources
 
@@ -28,7 +29,7 @@ def save_pokemon_stats_to_csv(pokemon):
     writer.writeheader()
     writer.writerows(pokemon)
 
-def get_pokemon_from_csv():
+def read_resouces_from_csv():
   files = []
   pokemon = []
   # Read all the CSV files
@@ -46,9 +47,24 @@ def get_pokemon_from_csv():
   
   return pokemon
 
+def read_stats_from_csv():
+  files = []
+  pokemon_df = pd.DataFrame()
+  # Read all the CSV files
+  with os.scandir('pokemon_stats') as it:
+    files = [(entry.name, entry.stat().st_mtime) for entry in it if entry.is_file() and entry.name.endswith('.csv')]
+  # Order by date, get the lastest date on top
+  files = sorted(files, key=lambda entry: entry[1], reverse=True)
+  csv_name = f'pokemon_stats/{files[0][0]}'
+  # Read the most recent CSV file
+  pokemon_df = pd.read_csv(csv_name)
+  
+  return pokemon_df
 
 def main():
   print('MAIN')
+  pokemon = read_stats_from_csv()
+  print(pokemon.head())
   
 
 if __name__ == '__main__':
