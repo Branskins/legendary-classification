@@ -13,7 +13,7 @@ def distance():
     for i in range(rows):
         distance_matrix[i] = np.sqrt(((stats[i] - stats[0:rows, ]) ** 2).sum(axis=1))
 
-    return distance_matrix
+    return distance_matrix, names
 
 
 def main():
