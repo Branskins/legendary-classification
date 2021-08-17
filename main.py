@@ -2,7 +2,7 @@ import math
 import random
 
 from personality_value_nature import p_value_nature
-from db_populate import get_pokemon_from_csv, save_pokemon_stats_to_csv
+from db_populate import read_resouces_from_csv, save_pokemon_stats_to_csv
 from poke_api import get_pokemon
 
 def hp_stat(base_stat, iv, ev, lvl):
@@ -45,7 +45,7 @@ def calculate_stats(pokemon):
   return total_stats
 
 def create_pokemon():
-  pokemon_resources = get_pokemon_from_csv()
+  pokemon_resources = read_resouces_from_csv()
   pokemon_stats = []
 
   for resource in pokemon_resources:
