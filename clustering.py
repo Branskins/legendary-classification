@@ -19,7 +19,7 @@ def distance():
     return distance_matrix, names
 
 
-def main(linkage):
+def load_clustering(linkage):
     # Load and select the stats
     pokemon_stats = read_stats_from_csv()
     stats = pokemon_stats.iloc[:, :-1]
@@ -35,5 +35,11 @@ def main(linkage):
     clustering_mapping_df.to_csv(csv_name)
 
 
+def main():
+    linkage_methods = ['ward', 'complete', 'average', 'single']
+    for linkage in linkage_methods:
+        load_clustering(linkage)
+
+
 if __name__ == '__main__':
-    main('ward')
+    main()
