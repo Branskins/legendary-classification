@@ -6,6 +6,19 @@ from datetime import date
 from db_populate import read_stats_from_csv
 
 
+def cleanse_pokemon(pokemon):
+    dtf_pokemon = pd.DataFrame()
+
+    # Filtering Mega Evolutions
+    criteria = pokemon['name'].map(lambda name: name.endswith('-mega'))
+    dtf_pokemon = pokemon[criteria]
+    # Filtering Gigantamax forms
+    criteria = pokemon['name'].map(lambda name: name.endswith('-gmax'))
+    dtf_pokemon = pokemon[criteria]
+
+    return dtf_pokemon
+
+
 def distance():
     pokemon_stats = read_stats_from_csv()
     names = pokemon_stats.iloc[:, -1]
