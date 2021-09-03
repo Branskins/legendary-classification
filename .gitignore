@@ -130,3 +130,9 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# PyCharm
+.idea/
+
+# Text files
+*.csv
