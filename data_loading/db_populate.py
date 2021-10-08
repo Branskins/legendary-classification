@@ -34,7 +34,7 @@ def read_resources_from_csv():
     files = []
     pokemon = []
     # Read all the CSV files
-    with os.scandir('../pokemon_resources') as it:
+    with os.scandir('pokemon_resources') as it:
         files = [(entry.name, entry.stat().st_mtime) for entry in it if entry.is_file() and entry.name.endswith('.csv')]
     # Order by date, get the latest date on top
     files = sorted(files, key=lambda entry: entry[1], reverse=True)
@@ -53,7 +53,7 @@ def read_stats_from_csv():
     files = []
     pokemon_df = pd.DataFrame()
     # Read all the CSV files
-    with os.scandir('../pokemon_stats') as it:
+    with os.scandir('pokemon_stats') as it:
         files = [(entry.name, entry.stat().st_mtime) for entry in it if entry.is_file() and entry.name.endswith('.csv')]
     # Order by date, get the latest date on top
     files = sorted(files, key=lambda entry: entry[1], reverse=True)
