@@ -21,7 +21,7 @@ def load_clustering(pokemon_stats, linkage):
     stats = pokemon_stats.iloc[:, :-1]
     # When selecting rows on a DataFrame the index doesn't match with the labels
     # It's necessary to reset the index to make a column bind
-    pokemon_stats = pokemon_stats.reset_index()
+    pokemon_stats = pokemon_stats.reset_index(drop=True)
 
     # Create clustering model
     clustering = AgglomerativeClustering(linkage=linkage).fit(stats)
