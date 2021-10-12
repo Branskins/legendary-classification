@@ -1,5 +1,11 @@
 import urllib3
 import json
+import logging
+
+logging.basicConfig(
+    filename='poke_api.log',
+    format='%(asctime)s - %(levelname)s: %(message)s'
+)
 
 
 def get_pokemon(url):
@@ -9,7 +15,6 @@ def get_pokemon(url):
         json_data = json.loads(res.data.decode('utf-8'))
     except urllib3.exceptions.NewConnectionError:
         print('Connection failed.')
-
     return json_data
 
 
