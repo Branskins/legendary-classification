@@ -9,12 +9,21 @@ logging.basicConfig(
 
 
 def get_pokemon(url):
+    json_data = None
+
     try:
+        logging.info("Data loading process started: Getting individual Pokemon data")
+
         http = urllib3.PoolManager()
         res = http.request('GET', url)
         json_data = json.loads(res.data.decode('utf-8'))
+
+        logging.info("Data loading process completed")
     except urllib3.exceptions.NewConnectionError:
-        print('Connection failed.')
+        logging.warning("Data loading process failed: Error getting individual Pokemon data")
+    except json.decoder.JSONDecodeError:
+        logging.warning("Data loading process failed: Error Loading JSON")
+
     return json_data
 
 
@@ -42,3 +51,15 @@ def get_pokemon_resources():
         print('Connection failed.')
 
     return all_pokemon
+
+
+def main():
+    url_to_success = 'https://pokeapi.co/api/v2/pokemon/ditto'
+    url_to_fail = 'https://pokeapi.co/api/v2/pokemon/ditt'
+
+    assert get_pokemon(url_to_success) is not None
+    assert get_pokemon(url_to_fail) is None
+
+
+if __name__ == '__main__':
+    main()
