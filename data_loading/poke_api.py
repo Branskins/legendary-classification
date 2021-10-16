@@ -33,6 +33,8 @@ def get_pokemon_resources():
     all_pokemon = []
     # Do initial HTTP request
     try:
+        logging.info("Data loading process started: Getting all Pokemon resources")
+
         http = urllib3.PoolManager()
         res = http.request('GET', 'https://pokeapi.co/api/v2/pokemon?limit=200')
         json_data = json.loads(res.data.decode('utf-8'))
@@ -48,18 +50,27 @@ def get_pokemon_resources():
             json_data = json.loads(res.data.decode('utf-8'))
             for pokemon_resource in json_data['results']:
                 all_pokemon.append(pokemon_resource)
+
+        logging.info("Data loading process completed")
     except urllib3.exceptions.NewConnectionError:
-        print('Connection failed.')
+        logging.warning("Data loading process failed: Error getting all Pokemon resources")
+    except json.decoder.JSONDecodeError:
+        logging.warning("Data loading process failed: Error Loading JSON")
 
     return all_pokemon
 
 
 def main():
+    # Test for get_pokemon()
     url_to_success = 'https://pokeapi.co/api/v2/pokemon/ditto'
     url_to_fail = 'https://pokeapi.co/api/v2/pokemon/ditt'
 
     assert get_pokemon(url_to_success) is not None
     assert get_pokemon(url_to_fail) is None
+
+    # Test for get_pokemon_resources()
+    pokemon_resources = get_pokemon_resources()
+    assert len(pokemon_resources) > 0
 
 
 if __name__ == '__main__':
