@@ -34,3 +34,5 @@ def load_clustering(pokemon_stats, linkage):
     today = date.today().strftime('%Y-%m-%d')
     csv_name = f'pokemon_results/results_{linkage}_{today}.csv'
     clustering_mapping_df.to_csv(csv_name)
+
+    return clustering
