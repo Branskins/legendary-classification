@@ -1,6 +1,8 @@
 import csv
 import os
 import pandas as pd
+import pyodbc
+
 from datetime import date
 
 
@@ -24,8 +26,18 @@ class DataPersistence:
 
 class DatabasePersistence(DataPersistence):
 
+    def __init__(self):
+        self.driver = '{ODBC Driver 17 for SQL Server}'
+        self.server = 'localhost'
+        self.database = 'LegendaryClassification'
+
+    def test_connection(self):
+        _str = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};Trusted_Connection=yes'
+        cnxn = pyodbc.connect(_str)
+        cursor = cnxn.cursor()
+
     def save_resources(self, pokemon):
-        self.save_pokemon_resources_to_csv(pokemon)
+        pass
 
     def read_resources(self):
         pass
