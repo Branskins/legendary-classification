@@ -4,6 +4,8 @@ import pandas as pd
 import pyodbc
 
 from datetime import date
+from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
 
 
 class DataPersistence:
@@ -26,10 +28,22 @@ class DataPersistence:
 
 class DatabasePersistence(DataPersistence):
 
-    def __init__(self):
-        self.driver = '{ODBC Driver 17 for SQL Server}'
-        self.server = 'localhost'
-        self.database = 'LegendaryClassification'
+    def __init__(self,
+                 driver='{ODBC Driver 17 for SQL Server}',
+                 server='localhost',
+                 database='LegendaryClassification'):
+        self.driver = driver
+        self.server = server
+        self.database = database
+        self.engine = self._create_engine()
+
+    def _create_engine(self):
+        connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};Trusted_Connection=yes'
+        connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string})
+
+        engine = create_engine(connection_url)
+
+        return engine
 
     def test_connection(self):
         _str = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};Trusted_Connection=yes'
@@ -46,7 +60,7 @@ class DatabasePersistence(DataPersistence):
         pass
 
     def read_stats(self):
-        pass
+        return pd.read_sql_table('ModelStats', self.engine)
 
 
 class CSVPersistence(DatabasePersistence):
@@ -118,5 +132,4 @@ class CSVPersistence(DatabasePersistence):
         pokemon_df = pd.DataFrame(pd.read_csv(csv_name))
 
         return pokemon_df
-
 
