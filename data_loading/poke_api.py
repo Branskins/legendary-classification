@@ -1,3 +1,4 @@
+import pandas as pd
 import urllib3
 import json
 import logging
@@ -30,7 +31,7 @@ def get_pokemon(url):
 
 def get_pokemon_resources():
     # Initialize data to retrieve
-    all_pokemon = []
+    resources = pd.DataFrame()
     # Do initial HTTP request
     try:
         logging.info("Data loading process started: Getting all Pokemon resources")
@@ -40,16 +41,16 @@ def get_pokemon_resources():
         json_data = json.loads(res.data.decode('utf-8'))
         # Append pokemon results
         if len(json_data['results']) > 0:
-            for pokemon_resource in json_data['results']:
-                all_pokemon.append(pokemon_resource)
+            resources = pd.DataFrame(json_data['results'])
 
         while json_data['next'] is not None:
             # Get next URL to retrieve remaining data
             next_request = json_data['next']
             res = http.request('GET', next_request)
             json_data = json.loads(res.data.decode('utf-8'))
-            for pokemon_resource in json_data['results']:
-                all_pokemon.append(pokemon_resource)
+            # Append new data from pagination result
+            if len(json_data['results']) > 0:
+                resources = resources.append(pd.DataFrame(json_data['results']), ignore_index=True)
 
         logging.info("Data loading process completed")
     except urllib3.exceptions.NewConnectionError:
@@ -57,7 +58,7 @@ def get_pokemon_resources():
     except json.decoder.JSONDecodeError:
         logging.warning("Data loading process failed: Error Loading JSON")
 
-    return all_pokemon
+    return resources
 
 
 def main():
