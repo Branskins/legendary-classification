@@ -13,10 +13,16 @@ class DataPersistence:
     def __init__(self):
         self.today = date.today().strftime('%Y-%m-%d')
 
-    def save_resources(self, pokemon):
+    def save_pokemon_resources(self, pokemon):
         pass
 
-    def read_resources(self):
+    def read_pokemon_resources(self):
+        pass
+
+    def save_base_stats(self, stats):
+        pass
+
+    def read_base_stats(self):
         pass
 
     def save_stats(self, pokemon):
@@ -36,6 +42,9 @@ class DatabasePersistence(DataPersistence):
         self.server = server
         self.database = database
         self.engine = self._create_engine()
+        self.pokemon_resource_table = 'PokemonResource'
+        self.base_stat_table = 'BaseStat'
+        self.model_stat_table = 'ModelStat'
 
     def _create_engine(self):
         connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};Trusted_Connection=yes'
@@ -50,11 +59,17 @@ class DatabasePersistence(DataPersistence):
         cnxn = pyodbc.connect(_str)
         cursor = cnxn.cursor()
 
-    def save_resources(self, pokemon):
-        pass
+    def save_pokemon_resources(self, resources):
+        resources.to_sql(self.pokemon_resource_table, self.engine, if_exists='replace', index=False)
 
-    def read_resources(self):
-        pass
+    def read_pokemon_resources(self):
+        return pd.read_sql_table(self.pokemon_resource_table, self.engine)
+
+    def save_base_stats(self, stats):
+        stats.to_sql(self.base_stat_table, self.engine, if_exists='replace', index=False)
+
+    def read_base_stats(self):
+        return pd.read_sql_table(self.base_stat_table, self.engine)
 
     def save_stats(self, pokemon):
         pass
@@ -63,9 +78,9 @@ class DatabasePersistence(DataPersistence):
         return pd.read_sql_table('ModelStats', self.engine)
 
 
-class CSVPersistence(DatabasePersistence):
+class CSVPersistence(DataPersistence):
 
-    def save_resources(self, pokemon):
+    def save_pokemon_resources(self, pokemon):
         self.save_pokemon_resources_to_csv()
 
     def save_pokemon_resources_to_csv(self, pokemon):
@@ -79,7 +94,7 @@ class CSVPersistence(DatabasePersistence):
             writer.writeheader()
             writer.writerows(pokemon)
 
-    def read_resources(self):
+    def read_pokemon_resources(self):
         return self.read_resources_from_csv()
 
     def read_resources_from_csv(self):
