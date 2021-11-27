@@ -13,7 +13,7 @@ class DataPersistence:
     def __init__(self):
         self.today = date.today().strftime('%Y-%m-%d')
 
-    def save_pokemon_resources(self, pokemon):
+    def save_pokemon_resources(self, resources):
         pass
 
     def read_pokemon_resources(self):
@@ -25,10 +25,16 @@ class DataPersistence:
     def read_base_stats(self):
         pass
 
-    def save_stats(self, pokemon):
+    def save_calculated_stats(self, stats):
         pass
 
-    def read_stats(self):
+    def read_calculated_stats(self):
+        pass
+
+    def save_hierarchical_model_stats(self, stats):
+        pass
+
+    def read_hierarchical_model_stats(self):
         pass
 
 
@@ -44,7 +50,8 @@ class DatabasePersistence(DataPersistence):
         self.engine = self._create_engine()
         self.pokemon_resource_table = 'PokemonResource'
         self.base_stat_table = 'BaseStat'
-        self.model_stat_table = 'ModelStat'
+        self.calculated_stat_table = 'CalculatedStat'
+        self.model_stat_table = 'HierarchicalModelStat'
 
     def _create_engine(self):
         connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};Trusted_Connection=yes'
@@ -71,16 +78,22 @@ class DatabasePersistence(DataPersistence):
     def read_base_stats(self):
         return pd.read_sql_table(self.base_stat_table, self.engine)
 
-    def save_stats(self, pokemon):
-        pass
+    def save_calculated_stats(self, stats):
+        stats.to_sql(self.calculated_stat_table, self.engine, if_exists='append', index=False)
 
-    def read_stats(self):
-        return pd.read_sql_table('ModelStats', self.engine)
+    def read_calculated_stats(self):
+        return pd.read_sql_table(self.calculated_stat_table, self.engine)
+
+    def save_hierarchical_model_stats(self, stats):
+        stats.to_sql(self.model_stat_table, self.engine, if_exists='replace', index=False)
+
+    def read_hierarchical_model_stats(self):
+        return pd.read_sql_table(self.model_stat_table, self.engine)
 
 
 class CSVPersistence(DataPersistence):
 
-    def save_pokemon_resources(self, pokemon):
+    def save_pokemon_resources(self, resources):
         self.save_pokemon_resources_to_csv()
 
     def save_pokemon_resources_to_csv(self, pokemon):
@@ -116,7 +129,7 @@ class CSVPersistence(DataPersistence):
 
         return pokemon
 
-    def save_stats(self, pokemon):
+    def save_hierarchical_model_stats(self, stats):
         self.save_pokemon_stats_to_csv()
 
     def save_pokemon_stats_to_csv(self, pokemon):
@@ -130,7 +143,7 @@ class CSVPersistence(DataPersistence):
             writer.writeheader()
             writer.writerows(pokemon)
 
-    def read_stats(self):
+    def read_hierarchical_model_stats(self):
         return self.read_stats_from_csv()
 
     def read_stats_from_csv(self):
