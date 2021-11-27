@@ -17,22 +17,7 @@ def distance(pokemon_stats):
 
 
 def load_clustering(pokemon_stats, linkage):
-    # Select the stats only
-    stats = pokemon_stats.iloc[:, :-1]
-    # When selecting rows on a DataFrame the index doesn't match with the labels
-    # It's necessary to reset the index to make a column bind
-    pokemon_stats = pokemon_stats.reset_index(drop=True)
-
     # Create clustering model
-    clustering = AgglomerativeClustering(linkage=linkage).fit(stats)
-    # Format clustering labels for concatenating
-    labels = pd.Series(clustering.labels_, name='legendary')
-
-    # Concat the results with the stats
-    clustering_mapping_df = pd.concat([pokemon_stats, labels], axis=1)
-    # Save the results
-    today = date.today().strftime('%Y-%m-%d')
-    csv_name = f'pokemon_results/results_{linkage}_{today}.csv'
-    clustering_mapping_df.to_csv(csv_name)
+    clustering = AgglomerativeClustering(linkage=linkage).fit(pokemon_stats)
 
     return clustering
