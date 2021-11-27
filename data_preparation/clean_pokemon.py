@@ -11,4 +11,4 @@ def delete_pokemon_forms(pokemon):
     pikachu_criteria = df_forms['name'].map(lambda name: not name.startswith(variations))
     df = df_forms[pikachu_criteria]
 
-    return df
+    return df.reset_index(drop=True)
