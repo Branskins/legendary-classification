@@ -1,3 +1,15 @@
+from enum import Enum
+
+
+class EnumStat(Enum):
+    HP = 'hp'
+    ATTACK = 'attack'
+    DEFENSE = 'defense'
+    SPECIAL_ATTACK = 'special_attack'
+    SPECIAL_DEFENSE = 'special_defense'
+    SPEED = 'speed'
+
+
 class Nature:
 
     # stats: 'hp' 'attack' 'defense' 'special-attack' 'special-defense' 'speed'
@@ -17,9 +29,9 @@ class Hardy(Nature):
 class Lonely(Nature):
 
     def multiplier(self, stat):
-        if stat == 'attack':
+        if stat == EnumStat.ATTACK.value:
             return self.increased_stat
-        elif stat == 'defense':
+        elif stat == EnumStat.DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -28,9 +40,9 @@ class Lonely(Nature):
 class Brave(Nature):
 
     def multiplier(self, stat):
-        if stat == 'attack':
+        if stat == EnumStat.ATTACK.value:
             return self.increased_stat
-        elif stat == 'speed':
+        elif stat == EnumStat.SPEED.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -39,9 +51,9 @@ class Brave(Nature):
 class Adamant(Nature):
 
     def multiplier(self, stat):
-        if stat == 'attack':
+        if stat == EnumStat.ATTACK.value:
             return self.increased_stat
-        elif stat == 'special-attack':
+        elif stat == EnumStat.SPECIAL_ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -50,9 +62,9 @@ class Adamant(Nature):
 class Naughty(Nature):
 
     def multiplier(self, stat):
-        if stat == 'attack':
+        if stat == EnumStat.ATTACK.value:
             return self.increased_stat
-        elif stat == 'special-defense':
+        elif stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -61,9 +73,9 @@ class Naughty(Nature):
 class Bold(Nature):
 
     def multiplier(self, stat):
-        if stat == 'defense':
+        if stat == EnumStat.DEFENSE.value:
             return self.increased_stat
-        elif stat == 'attack':
+        elif stat == EnumStat.ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -78,9 +90,9 @@ class Docile(Nature):
 class Relaxed(Nature):
 
     def multiplier(self, stat):
-        if stat == 'defense':
+        if stat == EnumStat.DEFENSE.value:
             return self.increased_stat
-        elif stat == 'speed':
+        elif stat == EnumStat.SPEED.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -89,9 +101,9 @@ class Relaxed(Nature):
 class Impish(Nature):
 
     def multiplier(self, stat):
-        if stat == 'defense':
+        if stat == EnumStat.DEFENSE.value:
             return self.increased_stat
-        elif stat == 'special-attack':
+        elif stat == EnumStat.SPECIAL_ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -100,9 +112,9 @@ class Impish(Nature):
 class Lax(Nature):
 
     def multiplier(self, stat):
-        if stat == 'defense':
+        if stat == EnumStat.DEFENSE.value:
             return self.increased_stat
-        elif stat == 'special-defense':
+        elif stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -111,9 +123,9 @@ class Lax(Nature):
 class Timid(Nature):
 
     def multiplier(self, stat):
-        if stat == 'speed':
+        if stat == EnumStat.SPEED.value:
             return self.increased_stat
-        elif stat == 'attack':
+        elif stat == EnumStat.ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -122,9 +134,9 @@ class Timid(Nature):
 class Hasty(Nature):
 
     def multiplier(self, stat):
-        if stat == 'speed':
+        if stat == EnumStat.SPEED.value:
             return self.increased_stat
-        elif stat == 'defense':
+        elif stat == EnumStat.DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -139,9 +151,9 @@ class Serious(Nature):
 class Jolly(Nature):
 
     def multiplier(self, stat):
-        if stat == 'speed':
+        if stat == EnumStat.SPEED.value:
             return self.increased_stat
-        elif stat == 'special-attack':
+        elif stat == EnumStat.SPECIAL_ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -150,9 +162,9 @@ class Jolly(Nature):
 class Naive(Nature):
 
     def multiplier(self, stat):
-        if stat == 'speed':
+        if stat == EnumStat.SPEED.value:
             return self.increased_stat
-        elif stat == 'special-defense':
+        elif stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -161,9 +173,9 @@ class Naive(Nature):
 class Modest(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-attack':
+        if stat == EnumStat.SPECIAL_ATTACK.value:
             return self.increased_stat
-        elif stat == 'attack':
+        elif stat == EnumStat.ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -172,9 +184,9 @@ class Modest(Nature):
 class Mild(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-attack':
+        if stat == EnumStat.SPECIAL_ATTACK.value:
             return self.increased_stat
-        elif stat == 'defense':
+        elif stat == EnumStat.DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -183,9 +195,9 @@ class Mild(Nature):
 class Quiet(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-attack':
+        if stat == EnumStat.SPECIAL_ATTACK.value:
             return self.increased_stat
-        elif stat == 'speed':
+        elif stat == EnumStat.SPEED.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -200,9 +212,9 @@ class Bashful(Nature):
 class Rash(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-attack':
+        if stat == EnumStat.SPECIAL_ATTACK.value:
             return self.increased_stat
-        elif stat == 'special-defense':
+        elif stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -211,9 +223,9 @@ class Rash(Nature):
 class Calm(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-defense':
+        if stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.increased_stat
-        elif stat == 'attack':
+        elif stat == EnumStat.ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -222,9 +234,9 @@ class Calm(Nature):
 class Gentle(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-defense':
+        if stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.increased_stat
-        elif stat == 'defense':
+        elif stat == EnumStat.DEFENSE.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -233,9 +245,9 @@ class Gentle(Nature):
 class Sassy(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-defense':
+        if stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.increased_stat
-        elif stat == 'speed':
+        elif stat == EnumStat.SPEED.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
@@ -244,9 +256,9 @@ class Sassy(Nature):
 class Careful(Nature):
 
     def multiplier(self, stat):
-        if stat == 'special-defense':
+        if stat == EnumStat.SPECIAL_DEFENSE.value:
             return self.increased_stat
-        elif stat == 'special-attack':
+        elif stat == EnumStat.SPECIAL_ATTACK.value:
             return self.decreased_stat
         else:
             return self.neutral_stat
