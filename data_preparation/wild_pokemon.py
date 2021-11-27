@@ -1,7 +1,8 @@
 import math
 import random
+import importlib
 
-from data_loading.db_populate import read_resources_from_csv
+# from data_loading.db_populate import read_resources_from_csv
 from data_loading.poke_api import get_pokemon
 from data_preparation.personality_value_nature import p_value_nature
 
@@ -19,7 +20,7 @@ def personality_value():
 
 
 def create_nature_instance(nature_name):
-    module = __import__('nature')
+    module = importlib.import_module('data_preparation.nature')
     class_ = getattr(module, nature_name)
     instance = class_()
     return instance
@@ -51,16 +52,31 @@ def calculate_stats(pokemon):
     return total_stats
 
 
-def create_pokemon():
-    pokemon_resources = read_resources_from_csv()
-    pokemon_stats = []
+def calculate_stats_apply(pokemon):
+    iv = ev = 0
+    lvl = 50
+    stat_name = pokemon.name
+    nature_instance = define_nature()
+    nature = nature_instance.multiplier(stat_name)
 
-    for resource in pokemon_resources:
-        name = resource['name']
-        print(f'Getting pokemon: {name}')
-        pokemon = get_pokemon(resource['url'])
-        stats = calculate_stats(pokemon)
-        stats['name'] = resource['name']
-        pokemon_stats.append(stats)
+    if stat_name == 'hp':
+        stat = pokemon.apply(hp_stat, args=(iv, ev, lvl, ))
+    else:
+        stat = pokemon.apply(other_stat, args=(iv, ev, lvl, nature, ))
 
-    return pokemon_stats
+    return stat
+
+
+# def create_pokemon():
+#     pokemon_resources = read_resources_from_csv()
+#     pokemon_stats = []
+#
+#     for resource in pokemon_resources:
+#         name = resource['name']
+#         print(f'Getting pokemon: {name}')
+#         pokemon = get_pokemon(resource['url'])
+#         stats = calculate_stats(pokemon)
+#         stats['name'] = resource['name']
+#         pokemon_stats.append(stats)
+#
+#     return pokemon_stats
