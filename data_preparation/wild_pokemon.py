@@ -3,6 +3,8 @@ import random
 import importlib
 
 # from data_loading.db_populate import read_resources_from_csv
+import pandas as pd
+
 from data_loading.poke_api import get_pokemon
 from data_preparation.personality_value_nature import p_value_nature
 
@@ -53,18 +55,23 @@ def calculate_stats(pokemon):
 
 
 def calculate_stats_apply(pokemon):
-    iv = ev = 0
+    s = {}
+    iv = ev = stat = 0
     lvl = 50
-    stat_name = pokemon.name
     nature_instance = define_nature()
-    nature = nature_instance.multiplier(stat_name)
 
-    if stat_name == 'hp':
-        stat = pokemon.apply(hp_stat, args=(iv, ev, lvl, ))
-    else:
-        stat = pokemon.apply(other_stat, args=(iv, ev, lvl, nature, ))
+    for stat_value, stat_name in zip(pokemon.values, pokemon.index.values):
+        nature = nature_instance.multiplier(stat_name)
+        if stat_name == 'hp':
+            # stat = pokemon.apply(hp_stat, args=(iv, ev, lvl,))
+            stat = hp_stat(stat_value, iv, ev, lvl)
+        else:
+            # stat = pokemon.apply(other_stat, args=(iv, ev, lvl, nature,))
+            stat = other_stat(stat_value, iv, ev, lvl, nature)
+        # s.append(stat)
+        s[stat_name] = stat
 
-    return stat
+    return pd.Series(s)
 
 
 # def create_pokemon():

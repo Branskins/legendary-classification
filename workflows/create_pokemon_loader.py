@@ -14,7 +14,7 @@ def main():
 
     for index in range(30):
         print(f'Iteration #{index}')
-        df_stats = df_base_stats.iloc[:, 1:].apply(wp.calculate_stats_apply)
+        df_stats = df_base_stats.iloc[:, 1:].apply(wp.calculate_stats_apply, axis=1)
         df_stats = pd.concat([s_pokemon_names, df_stats], axis=1)
         persistence.save_calculated_stats(df_stats)
 
