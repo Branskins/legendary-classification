@@ -18,6 +18,6 @@ def distance(pokemon_stats):
 
 def load_clustering(pokemon_stats, linkage):
     # Create clustering model
-    clustering = AgglomerativeClustering(linkage=linkage).fit(pokemon_stats)
+    clustering = AgglomerativeClustering(linkage=linkage).fit(pokemon_stats.values)
 
     return clustering
