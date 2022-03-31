@@ -8,6 +8,7 @@ def main():
     persistence = DatabasePersistence()
     df_stats = persistence.read_calculated_stats()
 
+    df_stats = df_stats.sample(frac=1).reset_index(drop=True)
     model = load_clustering(df_stats.iloc[:, 1:], 'ward')
     labels = pd.Series(model.labels_, name='legendary')
     model_mapping = pd.concat([df_stats.iloc[:, 0], labels], axis=1)
