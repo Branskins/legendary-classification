@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 urllib3 = "*"
 pyodbc = "*"
+pandas = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
