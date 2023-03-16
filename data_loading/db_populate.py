@@ -93,15 +93,19 @@ class DatabasePersistence(DataPersistence):
 
 class CSVPersistence(DataPersistence):
 
+    def __init__(self):
+        DataPersistence.__init__(self)
+        self.folder = 'pokemon_resources'
+
     def save_pokemon_resources(self, resources):
         self.save_pokemon_resources_to_csv(resources)
 
     def save_pokemon_resources_to_csv(self, pokemon):
         # Set CSV file name with today's date
-        csv_name = f'pokemon_resources/pokemon_resources_{self.today}.csv'
-        # Save temporary data into a CSV file
-        with open(csv_name, 'w+', newline='') as csvfile:
-            pokemon.to_csv(csv_name, index=False)
+        csv_name = f'{self.folder}/pokemon_resources_{self.today}.csv'
+        # Save temporary data into a CSV file:
+        os.makedirs(self.folder, exist_ok=True)
+        pokemon.to_csv(csv_name, index=False)
 
     def read_pokemon_resources(self):
         return self.read_resources_from_csv()
